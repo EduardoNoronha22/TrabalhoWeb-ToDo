@@ -1,7 +1,7 @@
 <?php
     require '../scripts/config.php';
     require '../scripts/database.php';
-    
+
     header('content-type: text/html; charset: utf-8');
     
     if (!isset($_SESSION)){
@@ -17,6 +17,11 @@
     $userMail= $_SESSION['UsuarioMail'];
     $userImg= $_SESSION['UsuarioImg'];
     $userLogin = $_SESSION['UsuarioLogin'];
+
+    // Validando as actions se existem e se nao sao vazias
+    if(isset( $_GET['verificador']))
+        $verificador = $_GET['verificador']; //Debugando valor do id que ira pegar da url
+    //header('Location: projeto.php');// escondendo id da url
 ?>
 
 <!DOCTYPE html>
@@ -120,12 +125,19 @@
                                 <h4 class="bg-red">DO</h4>
                             </div>
                             <div class="box-body">
-                                <a href="../paginas/tarefa.php" class="bg-red">
-                                    <h5 class="text-center"> Trabalho SD</h5>
-                                </a>
-                                <a href="../paginas/tarefa.php" class="bg-red">
-                                    <h5 class="text-center"> Trabalho SD</h5>
-                                </a>
+                            <?php
+                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$verificador ."') AND (`estado` = 1)");
+                                if(!$tarefas){
+                                    echo '<h5 class="text-center"> ---- </h5>';
+                                }
+                                else
+                                    foreach($tarefas as $tarefa){
+                                        $urltarefa = "../paginas/tarefa.php?verificador=".$tarefa['id_tarefa'];
+                                        echo '<a href="'.$urltarefa.'" class="bg-red">
+                                                <h5 class="text-center">'.$tarefa['nome'].'</h5>
+                                              </a>';
+                                    }
+                            ?>
                             </div>
                         </div>
                         <div class="box-solid bg-orange  col-md-4">
@@ -133,27 +145,19 @@
                                 <h4 class="bg-orange">DOING</h4>
                             </div>
                             <div class="box-body">
-                                <a href="../paginas/tarefa.php" class="bg-orange">
-                                    <h5 class="text-center"> Trabalho Web </h5>
-                                </a>
-                                <a href="../paginas/tarefa.php" class="bg-orange">
-                                    <h5 class="text-center"> Trabalho Web </h5>
-                                </a>
-                                <a href="../paginas/tarefa.php" class="bg-orange">
-                                    <h5 class="text-center"> Trabalho Web </h5>
-                                </a>
-                                <a href="../paginas/tarefa.php" class="bg-orange">
-                                    <h5 class="text-center"> Trabalho Web </h5>
-                                </a>
-                                <a href="../paginas/tarefa.php" class="bg-orange">
-                                    <h5 class="text-center"> Trabalho Web </h5>
-                                </a>
-                                <a href="../paginas/tarefa.php" class="bg-orange">
-                                    <h5 class="text-center"> Trabalho Web </h5>
-                                </a>
-                                <a href="../paginas/tarefa.php" class="bg-orange">
-                                    <h5 class="text-center"> Trabalho Web </h5>
-                                </a>
+                                <?php
+                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$verificador ."') AND (`estado` = 2)");
+                                if(!$tarefas){
+                                    echo '<h5 class="text-center"> ---- </h5>';
+                                }
+                                else
+                                    foreach($tarefas as $tarefa){
+                                        $urltarefa = "../paginas/tarefa.php?verificador=".$tarefa['id_tarefa'];
+                                        echo '<a href="'.$urltarefa.'" class="bg-orange">
+                                                <h5 class="text-center">'.$tarefa['nome'].'</h5>
+                                              </a>';
+                                    }
+                                ?>
                             </div>
                         </div>
                         <div class="box-solid bg-green col-md-4">
@@ -161,15 +165,19 @@
                                 <h4 class="bg-green">DONE</h4>
                             </div>
                             <div class="box-body bg-green">
-                                <a href="../paginas/tarefa.html" class="bg-green">
-                                    <h5 class="text-center"> Trabalho ORI </h5>
-                                </a>
-                                <a href="../paginas/tarefa.html" class="bg-green">
-                                    <h5 class="text-center"> Trabalho ORI </h5>
-                                </a>
-                                <a href="../paginas/tarefa.html" class="bg-green">
-                                    <h5 class="text-center"> Trabalho ORI </h5>
-                                </a>
+                                <?php
+                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$verificador ."') AND (`estado` = 3)");
+                                if(!$tarefas){
+                                    echo '<h5 class="text-center"> ---- </h5>';
+                                }
+                                else
+                                    foreach($tarefas as $tarefa){
+                                        $urltarefa = "../paginas/tarefa.php?verificador=".$tarefa['id_tarefa'];
+                                        echo '<a href="'.$urltarefa.'" class="bg-green">
+                                                <h5 class="text-center">'.$tarefa['nome'].'</h5>
+                                              </a>';
+                                    }
+                                ?>
                             </div>
                         </div>
                     </div>

@@ -124,14 +124,15 @@
                             <?php
                                 $projetos = DBRead('projeto'," WHERE (`id_user` = '".$userId ."')");
                                 if(!$projetos){
-                                    echo '<p style="text-align: center; font-weight: bold;">Nenhuma tarefa encontrada!</p>';
+                                    echo '<p style="text-align: center; font-weight: bold;">Você ainda não tem nenhum projeto!</p>';
                                 }
                                 else
                                     foreach($projetos as $projeto){
                                         //$projeto = array($projetos);
+                                        $urlprojeto = "../paginas/projeto.php?verificador=".$projeto['id_projeto'];
                                         echo '<li>
-                                                <a href="../paginas/projeto.php">
-                                                <span class="text-center">'; echo $projeto['nome']; echo '</span>
+                                                <a href="'.$urlprojeto.'"
+                                                <span class="text-center">'.$projeto['nome'].'</span>
                                                 </a>
                                              </li>';
                                     }
