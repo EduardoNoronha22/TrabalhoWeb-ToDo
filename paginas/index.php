@@ -52,7 +52,8 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
                         </div>
                     </div>
                 </form>
