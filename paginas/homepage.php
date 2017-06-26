@@ -117,7 +117,7 @@
                 </section>
                 <div class="box box-info">
                     <div class="box-header text-center">
-                        <h3 class="box-title"> Projetos Cadastrados</h3>
+                        <h3 class="box-title"> PROJETOS DE SUA AUTORIA:</h3>
                     </div>
                     <div class="box-body text-center">
                         <ul class="todo-list">
@@ -127,6 +127,7 @@
                                     echo '<p style="text-align: center; font-weight: bold; color:black;">Você ainda não tem nenhum projeto!</p>';
                                 }
                                 else
+                                {
                                     foreach($projetos as $projeto){
                                         //$projeto = array($projetos);
                                         $urlprojeto = "../paginas/projeto.php?verificador=".$projeto['id_projeto'];
@@ -136,6 +137,37 @@
                                                 </a>
                                              </li>';
                                     }
+                                }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="box box-info">
+                    <div class="box-header text-center">
+                        <h3 class="box-title"> PROJETOS QUE PARTICIPA:</h3>
+                    </div>
+                    <div class="box-body text-center">
+                        <ul class="todo-list">
+                            <?php
+                                $projetospart = DBRead('membro'," WHERE (`id_membro` = '".$userId ."')");
+                                if(!$projetospart){
+                                    echo '<p style="text-align: center; font-weight: bold; color:black;">Você não faz parte de outros projetos!</p>';
+                                }
+                                else{
+                                    foreach($projetospart as $p){
+                                        $part = DBRead('projeto'," WHERE (`id_projeto` = '".$p['id_projeto'] ."')");
+                                        foreach ($part as $projp ) {
+                                            $urlprojeto = "../paginas/projeto.php?verificador=".$projp['id_projeto'];
+                                            echo '<li>
+                                                    <a href="'.$urlprojeto.'"
+                                                    <span class="text-center">'.$projp['nome'].'</span>
+                                                    </a>
+                                                </li>';
+                                        }
+                                    }
+                                }
                             ?>
                         </ul>
                     </div>

@@ -21,7 +21,20 @@
     // Validando as actions se existem e se nao sao vazias
     if(isset( $_GET['verificador']))
         $verificador = $_GET['verificador']; //Debugando valor do id que ira pegar da url
-    //header('Location: projeto.php');// escondendo id da url
+
+    $owner = DBRead('projeto'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
+    if(!$owner){
+        $member = DBRead('membro'," WHERE (`id_membro` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
+        if(!$member){
+            header("Location: ../paginas/homepage.php");
+        }
+        else{
+            $permission = 0;
+        }
+    }
+    else{
+        $permission = 1;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -98,7 +111,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../paginas/login.php">
+                    <a href="../scripts/logoff.php">
                         <span>Sair</span>
                     </a>
                 </li>
@@ -113,12 +126,17 @@
                     <h1 class="text-center">
                         Nome do Projeto
                     </h1>
-                        <button type="button" class="btn btn-bitbucket bg-red" aria-label="Left Align">
+                    <?php
+                    if($permission == 1){
+                        echo '<button type="submit" class="btn btn-bitbucket bg-red" aria-label="Left Align" name="deletarproj">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar Projeto
                         </button>
+
                         <button type="button" class="btn btn-success bg-green" aria-label="Left Align">
                             <span class="glyphicon glyphicon-check" aria-hidden="true"></span> Finalizar Projeto
-                        </button>
+                        </button>';
+                    }
+                    ?>
                     <div class="content">
                         <div class="box-solid bg-red col-md-4">
                             <div class="box-header">
