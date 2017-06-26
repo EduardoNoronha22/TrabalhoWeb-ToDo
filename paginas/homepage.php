@@ -124,7 +124,7 @@
                             <?php
                                 $projetos = DBRead('projeto'," WHERE (`id_user` = '".$userId ."')");
                                 if(!$projetos){
-                                    echo '<p style="text-align: center; font-weight: bold;">Você ainda não tem nenhum projeto!</p>';
+                                    echo '<p style="text-align: center; font-weight: bold; color:black;">Você ainda não tem nenhum projeto!</p>';
                                 }
                                 else
                                     foreach($projetos as $projeto){

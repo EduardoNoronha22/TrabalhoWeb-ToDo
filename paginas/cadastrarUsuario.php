@@ -1,3 +1,8 @@
+<?php
+    require '../scripts/config.php';
+    require '../scripts/database.php';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,87 +40,107 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
     </head>
-
-    <body class="skin-blue collapsed-box">
-        <div class="wrapper">
-            <header class="main-header">
-                <a href="homepage.php" class="logo"><b>To</b>Do</a>
-                <nav class="navbar navbar-static-top" role="navigation">
-                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                        <span class="sr-only">Toggle navigation</span>
-                    </a>
-                </nav>
-            </header>
-            <aside class="main-sidebar">
-                <section class="sidebar">
-                    <!-- Sidebar user panel -->
-                    <div class="user-panel">
-                        <div class="pull-left image">
-                            <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" />
-                        </div>
-                        <div class="pull-left info">
-                            <p><?php echo $userNome ?></p>
-                            <a><i class="fa fa-circle text-success"></i><?php echo $userMail ?></a>
-                        </div>
-                    </div>
-                    <ul class="sidebar-menu">
-                        <li>
-                            <a href="../paginas/novoprojeto.php">
-                                <i class="fa fa-plus"></i>
-                                <span>Novo Projeto</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="../paginas/alterardados.php">
-                                <i class="fa fa-edit"></i>
-                                <span>Alterar dados</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="../scripts/logoff.php">
-                                <span>Sair</span>
-                            </a>
-                        </li>
-                    </ul>
-                </section>
-            </aside>
-
-            <div class="content-wrapper bg-light-blue-active">
-                <div class="col-xs-4 col-lg-offset-5">
-                    <h1> Registrar</h1>
-                </div>
-
+    <body style="background-color:#aec3fd">
+    <?php
+    /* Pegar os valores do form, validar e enviar para a db*/
+        if(isset($_POST['register'] )){
+            $form["nome"] = DBEscape(strip_tags( trim( $_POST["nome"])));
+            $form["userlogin"] = DBEscape(strip_tags( trim( $_POST["user"])));
+            $senha = $_POST["pwuser"];
+            $csenha = $_POST["conpwuser"];
+            $form["senha"] = sha1($senha);
+            $form["email"] = DBEscape(strip_tags( trim( $_POST["email"])));
+            
+            //Verificar se usuario ja existe
+            $validarUsuario = DBRead('usuario', "WHERE userlogin = '{$form["userlogin"]}' LIMIT 1");
+            if($validarUsuario){
+                echo '<p style="text-align: center; font-weight: bold;">Usuário já existe!</p>';
+            }
+            else{
+                //Validar email, nome e usuario
+                if (!preg_match("/^[a-zA-Z ]*$/", $form["nome"])) {
+                  echo '<p style="text-align: center; font-weight: bold;">Nome invalído somente letras e espaços!</p>';
+                }   
+                else if (!preg_match("/^[a-zA-Z0-9]*$/", $form["userlogin"])) {
+                  echo '<p style="text-align: center; font-weight: bold;">Usuário invalído somente letras e números!</p>';
+                }
+                else if (!filter_var($form["email"], FILTER_VALIDATE_EMAIL)) {
+                  echo '<p style="text-align: center; font-weight: bold;">Email invalído!</p>'; 
+                }
+                else{               
+                    // Validando vazio
+                    if( empty( $form["nome"])){
+                        echo '<p style="text-align: center; font-weight: bold;">Preencha o nome!</p>';
+                    }
+                    else if( empty( $form["userlogin"])){
+                        echo '<p style="text-align: center; font-weight: bold;">Preencha o usuário</p>';
+                    }
+                    else if( empty( $senha)){
+                        echo '<p style="text-align: center; font-weight: bold;">Preencha a senha</p>';
+                    }
+                    else if( empty( $csenha)){
+                        echo '<p style="text-align: center; font-weight: bold;">Preencha a Confirmação de senha</p>';
+                    }
+                    else if( empty( $form["email"])){
+                        echo '<p style="text-align: center; font-weight: bold;">Preencha o Email</p>';
+                    }
+                    else if($senha != $csenha){
+                        echo '<p style="text-align: center; font-weight: bold;">Senha e confirmação não conferem!</p>';
+                    }
+                    //Gravar tarefa
+                    else{
+                        if( DBCreate('usuario', $form)){
+                            echo '<p style="text-align: center; font-weight: bold;">Usuário cadastrado!</p>';
+                        }
+                        else{
+                            echo '<p style="text-align: center; font-weight: bold;">Ocorreu um erro!</p>';
+                        }
+                    }
+                }
+            }
+            echo "<hr>";
+        }
+    ?>
+            <form action="" method="POST">
                 <div class="col-xs-4 col-lg-offset-4">
                     <div class="form-group">
                         <label for="nome"> Nome Completo</label>
-                        <input type="text" class="form-control" name="" id="nome" aria-describedby="helpId"
+                        <input type="text" class="form-control" name="nome" id="nome" aria-describedby="helpId"
                                placeholder="">
                     </div>
 
                     <div class="form-group">
                         <label for="user"> Nome de Usuário</label>
-                        <input type="text" class="form-control" name="" id="user" aria-describedby="helpId"
+                        <input type="text" class="form-control" name="user" id="user" aria-describedby="helpId"
                                placeholder="">
                     </div>
 
                     <div class="form-group">
                         <label for="email"> Email</label>
-                        <input type="email" class="form-control" name="" id="email" aria-describedby="emailHelpId"
+                        <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelpId"
                                placeholder="">
                     </div>
 
                     <div class="form-group">
                         <label for="pwuser">Senha</label>
-                        <input type="password" class="form-control" name="" id="pwuser" placeholder="">
+                        <input type="password" class="form-control" name="pwuser" id="pwuser" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmapwuser">Confirmar Senha</label>
+                        <input type="password" class="form-control" name="conpwuser" id="conpwuser" placeholder="">
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="btn-success "> Cadastrar</button>
+                        <button type="submit" class="btn-success" name="register" value="register"> Cadastrar</button>  
+                    </div>
+                    <div class="text-center">
+                        <a href="../paginas/index.php">
+                            <h2 class="text-center">Home</h3>
+                        </a>
                     </div>
                 </div>
-            
-            </div>
-        </div>
+            </form>
 
         <script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>
         <script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>

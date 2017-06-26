@@ -53,11 +53,13 @@
                     <div class="row">
                         <div class="col-xs-4">
                             <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
                         </div>
                     </div>
                 </form>
             </div>
+            <form action="../paginas/cadastrarUsuario.php">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+            </form>
         </div>
     </body>
 </html>
