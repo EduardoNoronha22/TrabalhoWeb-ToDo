@@ -23,17 +23,31 @@
     <body class="login-page">
         <div class="login-box">
             <div class="login-logo">
-                <a href="../index2.html"><b>To</b>Do</a>
+                <a href="../homepage.php"><b>To</b>Do</a>
             </div>
+        
             <div class="login-box-body">
                 <p class="login-box-msg">Entre com seu nome de usuário e senha:</p>
-                <form action="../paginas/homepage.html" method="post">
+                <?php
+                if(isset($_GET['erro'])){
+                    if($_GET['erro'] == '2'){
+                        echo '
+                        <div class="login-box-body">
+                            <div class="text-center">
+                                <p class="login-box-msg">Usuário ou senha incorreto!</p>
+                                <hr>
+                            </div>
+                        </div>';
+                    }
+                }
+                ?>
+                <form action="../scripts/login.php" method="post">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" placeholder="Nome de Usuário"/>
+                        <input type="text" class="form-control" placeholder="Nome de Usuário" name="user"/>
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="Senha"/>
+                        <input type="password" class="form-control" placeholder="Senha" name="pwuser"/>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="row">

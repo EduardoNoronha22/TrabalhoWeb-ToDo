@@ -1,3 +1,24 @@
+<?php
+    require '../scripts/config.php';
+    require '../scripts/database.php';
+
+    header('content-type: text/html; charset: utf-8');
+    
+    if (!isset($_SESSION)){
+         session_start();
+    }
+    if (!isset($_SESSION['UsuarioID'])){
+        session_destroy();
+        header("Location: ../paginas/index.php");
+    }
+
+    $userId = $_SESSION['UsuarioID'];
+    $userNome = $_SESSION['UsuarioNome'];
+    $userMail= $_SESSION['UsuarioMail'];
+    $userImg= $_SESSION['UsuarioImg'];
+    $userLogin = $_SESSION['UsuarioLogin'];
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,7 +60,7 @@
     <body class="skin-blue collapsed-box">
         <div class="wrapper">
             <header class="main-header">
-            <a href="homepage.html" class="logo"><b>To</b>Do</a>
+            <a href="homepage.php" class="logo"><b>To</b>Do</a>
             <nav class="navbar navbar-static-top" role="navigation">
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
@@ -51,28 +72,28 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                            <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Nome</p>
-                            <a><i class="fa fa-circle text-success"></i> email@gmail.com</a>
+                            <p><?php echo $userNome ?></p>
+                            <a><i class="fa fa-circle text-success"></i><?php echo $userMail ?></a>
                         </div>
                     </div>
                     <ul class="sidebar-menu">
                         <li>
-                            <a href="../paginas/novoprojeto.html">
+                            <a href="../paginas/novoprojeto.php">
                                 <i class="fa fa-plus"></i>
                                 <span>Novo Projeto</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../paginas/alterardados.html">
+                            <a href="../paginas/alterardados.php">
                                 <i class="fa fa-edit"></i>
                                 <span>Alterar dados</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../paginas/login.html">
+                            <a href="../scripts/logoff.php">
                                 <span>Sair</span>
                             </a>
                         </li>
@@ -84,21 +105,13 @@
                 <section class="content">
                     <div>
                         <div class="pull-right">
-                            <img src="../dist/img/user1-128x128.jpg" class="img-circle" alt="User Image">
+                            <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" height="162" width="162">
                         </div>
                         <div>
                             <h1 class="text-center">
-                                Nome Usuário
+                                Seja bem-vindo, <?php echo $userNome?> !  
                             </h1>
-                            <h4 class="text-center">
-                                Email
-                            </h4>
-                            <h4 class="text-center">
-                                Data de nascimento
-                            </h4>
-                            <h4 class="text-center">
-                                Endereco
-                            </h4>
+ 
                         </div>
                     </div>
                 </section>
@@ -108,34 +121,21 @@
                     </div>
                     <div class="box-body text-center">
                         <ul class="todo-list">
-                            <li>
-                                <a href="../paginas/projeto.html">
-                                    <span class="text-center">
-                                        Projeto 1
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="../paginas/projeto.html">
-                                    <span class="text-center">
-                                        Projeto 2
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="../paginas/projeto.html">
-                                    <span class="text-center">
-                                        Projeto 3
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="../paginas/projeto.html">
-                                    <span class="text-center">
-                                        Projeto 4
-                                    </span>
-                                </a>
-                            </li>
+                            <?php
+                                $projetos = DBRead('projeto'," WHERE (`id_user` = '".$userId ."')");
+                                if(!$projetos){
+                                    echo '<p style="text-align: center; font-weight: bold;">Nenhuma tarefa encontrada!</p>';
+                                }
+                                else
+                                    foreach($projetos as $projeto){
+                                        //$projeto = array($projetos);
+                                        echo '<li>
+                                                <a href="../paginas/projeto.php">
+                                                <span class="text-center">'; echo $projeto['nome']; echo '</span>
+                                                </a>
+                                             </li>';
+                                    }
+                            ?>
                         </ul>
                     </div>
                 </div>

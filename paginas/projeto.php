@@ -1,3 +1,24 @@
+<?php
+    require '../scripts/config.php';
+    require '../scripts/database.php';
+    
+    header('content-type: text/html; charset: utf-8');
+    
+    if (!isset($_SESSION)){
+         session_start();
+    }
+    if (!isset($_SESSION['UsuarioID'])){
+        session_destroy();
+        header("Location: ../paginas/index.php");
+    }
+
+    $userId = $_SESSION['UsuarioID'];
+    $userNome = $_SESSION['UsuarioNome'];
+    $userMail= $_SESSION['UsuarioMail'];
+    $userImg= $_SESSION['UsuarioImg'];
+    $userLogin = $_SESSION['UsuarioLogin'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,7 +60,7 @@
 <body class="skin-blue collapsed-box">
 <div class="wrapper">
     <header class="main-header">
-        <a href="homepage.html" class="logo"><b>To</b>Do</a>
+        <a href="homepage.php" class="logo"><b>To</b>Do</a>
         <nav class="navbar navbar-static-top" role="navigation">
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
@@ -51,28 +72,28 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                    <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" />
                 </div>
                 <div class="pull-left info">
-                    <p>Nome</p>
-                    <a><i class="fa fa-circle text-success"></i> email@gmail.com</a>
+                    <p><?php echo $userNome ?></p>
+                    <a><i class="fa fa-circle text-success"></i><?php echo $userMail ?></a>
                 </div>
             </div>
             <ul class="sidebar-menu">
                 <li>
-                    <a href="../paginas/novoprojeto.html">
+                    <a href="../paginas/novoprojeto.php">
                         <i class="fa fa-plus"></i>
                         <span>Novo Projeto</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../paginas/alterardados.html">
+                    <a href="../paginas/alterardados.php">
                         <i class="fa fa-edit"></i>
                         <span>Alterar dados</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../paginas/login.html">
+                    <a href="../paginas/login.php">
                         <span>Sair</span>
                     </a>
                 </li>
@@ -99,10 +120,10 @@
                                 <h4 class="bg-red">DO</h4>
                             </div>
                             <div class="box-body">
-                                <a href="../paginas/tarefa.html" class="bg-red">
+                                <a href="../paginas/tarefa.php" class="bg-red">
                                     <h5 class="text-center"> Trabalho SD</h5>
                                 </a>
-                                <a href="../paginas/tarefa.html" class="bg-red">
+                                <a href="../paginas/tarefa.php" class="bg-red">
                                     <h5 class="text-center"> Trabalho SD</h5>
                                 </a>
                             </div>
@@ -112,25 +133,25 @@
                                 <h4 class="bg-orange">DOING</h4>
                             </div>
                             <div class="box-body">
-                                <a href="../paginas/tarefa.html" class="bg-orange">
+                                <a href="../paginas/tarefa.php" class="bg-orange">
                                     <h5 class="text-center"> Trabalho Web </h5>
                                 </a>
-                                <a href="../paginas/tarefa.html" class="bg-orange">
+                                <a href="../paginas/tarefa.php" class="bg-orange">
                                     <h5 class="text-center"> Trabalho Web </h5>
                                 </a>
-                                <a href="../paginas/tarefa.html" class="bg-orange">
+                                <a href="../paginas/tarefa.php" class="bg-orange">
                                     <h5 class="text-center"> Trabalho Web </h5>
                                 </a>
-                                <a href="../paginas/tarefa.html" class="bg-orange">
+                                <a href="../paginas/tarefa.php" class="bg-orange">
                                     <h5 class="text-center"> Trabalho Web </h5>
                                 </a>
-                                <a href="../paginas/tarefa.html" class="bg-orange">
+                                <a href="../paginas/tarefa.php" class="bg-orange">
                                     <h5 class="text-center"> Trabalho Web </h5>
                                 </a>
-                                <a href="../paginas/tarefa.html" class="bg-orange">
+                                <a href="../paginas/tarefa.php" class="bg-orange">
                                     <h5 class="text-center"> Trabalho Web </h5>
                                 </a>
-                                <a href="../paginas/tarefa.html" class="bg-orange">
+                                <a href="../paginas/tarefa.php" class="bg-orange">
                                     <h5 class="text-center"> Trabalho Web </h5>
                                 </a>
                             </div>
