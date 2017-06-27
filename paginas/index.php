@@ -56,10 +56,10 @@
                         </div>
                     </div>
                 </form>
+                </div>
+                <form action="../paginas/cadastrarUsuario.php">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                </form>
             </div>
-            <form action="../paginas/cadastrarUsuario.php">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
-            </form>
-        </div>
     </body>
 </html>

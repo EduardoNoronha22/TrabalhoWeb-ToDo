@@ -40,7 +40,8 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body style="background-color:#aec3fd">
+
+    <body class="content bg-light-blue-active">
     <?php
     /* Pegar os valores do form, validar e enviar para a db*/
         if(isset($_POST['register'] )){
@@ -101,8 +102,15 @@
             echo "<hr>";
         }
     ?>
+        <div>
             <form action="" method="POST">
+
                 <div class="col-xs-4 col-lg-offset-4">
+
+                    <div class="text-center h2 bg-gray">
+                        <a href="homepage.php" class="logo"><b>To</b>Do</a>
+                    </div>
+
                     <div class="form-group">
                         <label for="nome"> Nome Completo</label>
                         <input type="text" class="form-control" name="nome" id="nome" aria-describedby="helpId"
@@ -134,14 +142,10 @@
                     <div class="text-center">
                         <button type="submit" class="btn-success" name="register" value="register"> Cadastrar</button>  
                     </div>
-                    <div class="text-center">
-                        <a href="../paginas/index.php">
-                            <h2 class="text-center">Home</h3>
-                        </a>
-                    </div>
+
                 </div>
             </form>
-
+        </div>
         <script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>
         <script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../plugins/slimScroll/jquery.slimScroll.min.js" type="text/javascript"></script>
