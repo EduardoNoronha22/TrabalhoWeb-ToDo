@@ -105,10 +105,10 @@
         <div>
             <form action="" method="POST">
 
-                <div class="col-xs-4 col-lg-offset-4">
+                <div class="col-xs-4 col-lg-offset-4 bg-gray">
 
-                    <div class="text-center h2 bg-gray">
-                        <a href="homepage.php" class="logo"><b>To</b>Do</a>
+                    <div class="text-center h2">
+                        <a href="homepage.php" class="text-black"><b>To</b>Do</a>
                     </div>
 
                     <div class="form-group">
@@ -139,8 +139,8 @@
                         <input type="password" class="form-control" name="conpwuser" id="conpwuser" placeholder="">
                     </div>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn-success" name="register" value="register"> Cadastrar</button>  
+                    <div class="text-center col-xs-6 col-lg-offset-3">
+                        <button type="submit" class="btn-success" name="register" value="register"> Cadastrar</button>
                     </div>
 
                 </div>
