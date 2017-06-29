@@ -1,3 +1,28 @@
+<?php
+    require '../scripts/config.php';
+    require '../scripts/database.php';
+
+    header('content-type: text/html; charset: utf-8');
+    
+    if (!isset($_SESSION)){
+         session_start();
+    }
+    if (!isset($_SESSION['UsuarioID'])){
+        session_destroy();
+        header("Location: ../paginas/index.php");
+    }
+
+    $userId = $_SESSION['UsuarioID'];
+    $userImg= $_SESSION['UsuarioImg'];
+    $userLogin = $_SESSION['UsuarioLogin'];
+
+    $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
+    foreach($infos as $dados);
+        $userNome = $dados["nome"];
+        $userMail= $dados["email"];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,15 +98,40 @@
             </ul>
         </section>
     </aside>
+    <?php
+
+    if(isset($_POST['insereProj'] )){
+        $form["nome"] = $_POST["pjnome"];
+        $form["id_user"] = $userId;
+
+        if(!empty($form["nome"]))
+            if (DBCreate('projeto', $form)){
+                echo '<script> alert("Projeto criado!")</script>';
+            }
+        else{
+            echo '<script> alert("Escolha um nome!")</script>';
+        }
+    }
+    ?>
 
     <div class="content-wrapper bg-light-blue-active">
         <div class="content">
             <!--<div class="col-md-9 col-md-offset-1">-->
+            <h2 class="text-center">Novo Projeto</h2>
             <div class="form-group col-lg-offset-3">
-                <h2> Projeto </h2>
-            </div>
-            <div class="form-group col-lg-offset-3">
-                <h3> Tarefa</h3>
+                <div class="col-md-9 col-md-offset-0">
+                    <label for="nome"> Nome do Projeto</label>
+                </div>
+                <div class="col-xs-7">
+                <form action="" method="post">
+                    <input type="text" class="form-control" name="pjnome" aria-describedby="helpId"
+                           placeholder="">
+
+                    <button type="submit" name="insereProj" class="btn btn-bitbucket bg-success pull-right" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Criar Projeto
+                    </button>
+                </form>
+                </div>
             </div>
 
             <div class="center-block"></div>
