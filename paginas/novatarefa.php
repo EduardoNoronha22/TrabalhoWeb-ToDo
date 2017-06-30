@@ -1,3 +1,28 @@
+<?php
+    require '../scripts/config.php';
+    require '../scripts/database.php';
+
+    header('content-type: text/html; charset: utf-8');
+    
+    if (!isset($_SESSION)){
+         session_start();
+    }
+    if (!isset($_SESSION['UsuarioID'])){
+        session_destroy();
+        header("Location: ../paginas/index.php");
+    }
+
+    $userId = $_SESSION['UsuarioID'];
+    $userImg= $_SESSION['UsuarioImg'];
+    $userLogin = $_SESSION['UsuarioLogin'];
+
+    $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
+    foreach($infos as $dados);
+        $userNome = $dados["nome"];
+        $userMail= $dados["email"];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +79,7 @@
             </div>
             <ul class="sidebar-menu">
                 <li>
-                    <a href="../paginas/novoprojeto.php">
+                    <a href="../paginas/criarprojeto.php">
                         <i class="fa fa-plus"></i>
                         <span>Novo Projeto</span>
                     </a>
@@ -73,6 +98,21 @@
             </ul>
         </section>
     </aside>
+    <?php
+
+    if(isset($_POST['insereProj'] )){
+        $form["nome"] = $_POST["pjnome"];
+        $form["id_user"] = $userId;
+
+        if(!empty($form["nome"]))
+            if (DBCreate('projeto', $form)){
+                echo '<script> alert("Projeto criado!")</script>';
+            }
+        else{
+            echo '<script> alert("Escolha um nome!")</script>';
+        }
+    }
+    ?>
 
     <div class="content-wrapper bg-light-blue-active">
         <div class="content">

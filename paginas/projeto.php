@@ -1,47 +1,47 @@
 <?php
-    require '../scripts/config.php';
-    require '../scripts/database.php';
+require '../scripts/config.php';
+require '../scripts/database.php';
 
-    header('content-type: text/html; charset: utf-8');
-    
-    if (!isset($_SESSION)){
-         session_start();
-    }
-    if (!isset($_SESSION['UsuarioID'])){
-        session_destroy();
-        header("Location: ../paginas/index.php");
-    }
-    
-    $userId = $_SESSION['UsuarioID'];
-    $userImg= $_SESSION['UsuarioImg'];
-    $userLogin = $_SESSION['UsuarioLogin'];
+header('content-type: text/html; charset: utf-8');
 
-    $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
-    foreach($infos as $dados);
-        $userNome = $dados["nome"];
-        $userMail= $dados["email"];
+if (!isset($_SESSION)){
+    session_start();
+}
+if (!isset($_SESSION['UsuarioID'])){
+    session_destroy();
+    header("Location: ../paginas/index.php");
+}
 
-    // Validando as actions se existem e se nao sao vazias
-    if(isset( $_GET['verificador']))
-        $verificador = $_GET['verificador']; //Debugando valor do id que ira pegar da url
+$userId = $_SESSION['UsuarioID'];
+$userImg= $_SESSION['UsuarioImg'];
+$userLogin = $_SESSION['UsuarioLogin'];
 
-    $owner = DBRead('projeto'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
-    if(!$owner){
-        $member = DBRead('membro'," WHERE (`id_membro` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
-        if(!$member){
-            header("Location: ../paginas/homepage.php");
-        }
-        else{
-            $permission = 0;
-        }
+$infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
+foreach($infos as $dados);
+$userNome = $dados["nome"];
+$userMail= $dados["email"];
+
+// Validando as actions se existem e se nao sao vazias
+if(isset( $_GET['verificador']))
+    $verificador = $_GET['verificador']; //Debugando valor do id que ira pegar da url
+
+$owner = DBRead('projeto'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
+if(!$owner){
+    $member = DBRead('membro'," WHERE (`id_membro` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
+    if(!$member){
+        header("Location: ../paginas/homepage.php");
     }
     else{
-        $permission = 1;
+        $permission = 0;
     }
+}
+else{
+    $permission = 1;
+}
 
-    foreach ($owner as $own) {
-        $nproj = $own['nome'];
-    }
+foreach ($owner as $own) {
+    $nproj = $own['nome'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -158,7 +158,7 @@
                                 <h4 class="bg-red">DO</h4>
                             </div>
                             <div class="box-body">
-                            <?php
+                                <?php
                                 $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$verificador ."') AND (`estado` = 1)");
                                 if(!$tarefas){
                                     echo '<h5 class="text-center"> ---- </h5>';
@@ -170,7 +170,7 @@
                                                 <h5 class="text-center">'.$tarefa['nome'].'</h5>
                                               </a>';
                                     }
-                            ?>
+                                ?>
                             </div>
                         </div>
                         <div class="box-solid bg-orange  col-md-4">

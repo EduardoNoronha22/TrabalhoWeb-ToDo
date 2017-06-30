@@ -54,7 +54,7 @@
                     </div>
                     <ul class="sidebar-menu">
                         <li>
-                            <a href="../paginas/novoprojeto.php">
+                            <a href="../paginas/criarprojeto.php">
                                 <i class="fa fa-plus"></i>
                                 <span>Novo Projeto</span>
                             </a>
