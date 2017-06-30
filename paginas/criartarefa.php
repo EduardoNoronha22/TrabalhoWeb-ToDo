@@ -1,8 +1,33 @@
+<?php
+require '../scripts/config.php';
+require '../scripts/database.php';
+
+header('content-type: text/html; charset: utf-8');
+
+if (!isset($_SESSION)){
+    session_start();
+}
+if (!isset($_SESSION['UsuarioID'])){
+    session_destroy();
+    header("Location: ../paginas/index.php");
+}
+
+$userId = $_SESSION['UsuarioID'];
+$userImg= $_SESSION['UsuarioImg'];
+$userLogin = $_SESSION['UsuarioLogin'];
+
+$infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
+foreach($infos as $dados);
+$userNome = $dados["nome"];
+$userMail= $dados["email"];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ToDo - Tarefa</title>
+    <title>ToDo - Criar Projeto</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -73,29 +98,42 @@
             </ul>
         </section>
     </aside>
+    <?php
+
+    if(isset($_POST['insereProj'] )){
+        $form["nome"] = $_POST["pjnome"];
+        $form["id_user"] = $userId;
+
+        if(!empty($form["nome"]))
+            if (DBCreate('projeto', $form)){
+                echo '<script> alert("Projeto criado!")</script>';
+            }
+            else{
+                echo '<script> alert("Escolha um nome!")</script>';
+            }
+    }
+    ?>
 
     <div class="content-wrapper bg-light-blue-active">
         <div class="content">
             <!--<div class="col-md-9 col-md-offset-1">-->
+            <h2 class="text-center">Nova Tarefa</h2>
             <div class="form-group col-lg-offset-3">
                 <div class="col-md-9 col-md-offset-0">
-                    <label for="nome"> Nome do Projeto</label>
+                    <label for="nome"> Nome da Tarefa</label>
                 </div>
                 <div class="col-xs-7">
-                    <input type="text" class="form-control" name="nome" id="nome" aria-describedby="helpId"
-                           placeholder="">
-                </div>
-            </div>
-            <div class="form-group col-lg-offset-3">
-                <div class="col-md-9 col-md-offset-0">
-                    <label for="nome"> Descrição do Projeto</label>
-                </div>
-                <div class="col-xs-7">
-                    <textarea class="form-control" rows="5"></textarea>
-
-                    <button type="button" class="btn btn-bitbucket bg-success pull-right" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Criar Projeto
-                    </button>
+                    <form action="" method="post">
+                        <input type="text" class="form-control" name="pjnome" aria-describedby="helpId"
+                               placeholder="">
+                        <label for="nome"> Descrição da Tarefa</label>
+                        <textarea class="form-control" rows="5"></textarea>
+                        <div class="form-group col-lg-offset-3">
+                            <button type="submit" name="insereProj" class="btn btn-bitbucket bg-success pull-right" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Criar Tarefa
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
