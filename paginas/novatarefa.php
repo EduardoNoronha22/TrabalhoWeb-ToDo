@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ToDo - Criar Projeto</title>
+    <title>ToDo - Criar Tarefa</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -77,11 +77,27 @@
     <div class="content-wrapper bg-light-blue-active">
         <div class="content">
             <!--<div class="col-md-9 col-md-offset-1">-->
+            <h2 class="text-center">Nova Tarefa</h2>
             <div class="form-group col-lg-offset-3">
-                <h2> Projeto </h2>
+                <div class="col-md-9 col-md-offset-0">
+                    <label for="nome"> Nome da Tarefa</label>
+                </div>
+                <div class="col-xs-7">
+                    <input type="text" class="form-control" name="nome" id="nome" aria-describedby="helpId"
+                           placeholder="">
+                </div>
             </div>
             <div class="form-group col-lg-offset-3">
-                <h3> Tarefa</h3>
+                <div class="col-md-9 col-md-offset-0">
+                    <label for="nome"> Descrição da Tarefa</label>
+                </div>
+                <div class="col-xs-7">
+                    <textarea class="form-control" rows="5"></textarea>
+
+                    <button type="button" class="btn btn-bitbucket bg-success pull-right" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Criar Projeto
+                    </button>
+                </div>
             </div>
 
             <div class="center-block"></div>

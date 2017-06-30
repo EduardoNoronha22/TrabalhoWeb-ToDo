@@ -13,10 +13,14 @@
     }
 
     $userId = $_SESSION['UsuarioID'];
-    $userNome = $_SESSION['UsuarioNome'];
-    $userMail= $_SESSION['UsuarioMail'];
     $userImg= $_SESSION['UsuarioImg'];
     $userLogin = $_SESSION['UsuarioLogin'];
+
+    $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
+    foreach($infos as $dados);
+        $userNome = $dados["nome"];
+        $userMail= $dados["email"];
+
 ?>
 
 <!DOCTYPE html>
@@ -151,7 +155,7 @@
                     <div class="box-body text-center">
                         <ul class="todo-list">
                             <?php
-                                $projetospart = DBRead('membro'," WHERE (`id_membro` = '".$userId ."')");
+                                $projetospart = DBRead('membro'," WHERE (`id_user` = '".$userId ."')");
                                 if(!$projetospart){
                                     echo '<p style="text-align: center; font-weight: bold; color:black;">Você não faz parte de outros projetos!</p>';
                                 }
