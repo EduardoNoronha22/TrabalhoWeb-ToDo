@@ -21,6 +21,9 @@ foreach($infos as $dados);
 $userNome = $dados["nome"];
 $userMail= $dados["email"];
 
+if(isset( $_GET['pid']))
+        $projetoid = $_GET['pid']; //Debugando valor do id que ira pegar da url
+
 ?>
 
 <!DOCTYPE html>
@@ -100,16 +103,18 @@ $userMail= $dados["email"];
     </aside>
     <?php
 
-    if(isset($_POST['insereProj'] )){
-        $form["nome"] = $_POST["pjnome"];
-        $form["id_user"] = $userId;
+    if(isset($_POST['insereTar'] )){
+        $form["nome"] = $_POST["nome"];
+        $form["descricao"] = $_POST["desc"];
+        $form["estado"] = 1;
+        $form["id_projeto"] = $projetoid;
 
-        if(!empty($form["nome"]))
-            if (DBCreate('projeto', $form)){
-                echo '<script> alert("Projeto criado!")</script>';
+        if( (!empty($form["nome"])) and (!empty($form["descricao"])) )
+            if (DBCreate('tarefa', $form)){
+                header("Location: ../paginas/projeto.php?pid={$projetoid}");
             }
             else{
-                echo '<script> alert("Escolha um nome!")</script>';
+                echo '<script> alert("Preencha os campos!")</script>';
             }
     }
     ?>
@@ -124,12 +129,12 @@ $userMail= $dados["email"];
                 </div>
                 <div class="col-xs-7">
                     <form action="" method="post">
-                        <input type="text" class="form-control" name="pjnome" aria-describedby="helpId"
+                        <input type="text" class="form-control" name="nome" aria-describedby="helpId"
                                placeholder="">
                         <label for="nome"> Descrição da Tarefa</label>
-                        <textarea class="form-control" rows="5"></textarea>
+                        <textarea class="form-control" rows="5" name="desc"></textarea>
                         <div class="form-group col-lg-offset-3">
-                            <button type="submit" name="insereProj" class="btn btn-bitbucket bg-success pull-right" aria-label="Left Align">
+                            <button type="submit" name="insereTar" class="btn btn-bitbucket bg-success pull-right" aria-label="Left Align">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Criar Tarefa
                             </button>
                         </div>

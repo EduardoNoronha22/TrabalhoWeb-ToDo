@@ -51,16 +51,15 @@
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="row">
-                        <div class="col-xs-6 pull-left">
-                            <a href="cadastrarUsuario.php" class="btn btn-primary btn-block btn-flat"> Registrar</a>
-
-                        </div>
-                        <div class="col-xs-6 pull-right">
+                        <div class="col-xs-4">
                             <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
                         </div>
                     </div>
                 </form>
-                </div>
             </div>
+            <form action="../paginas/cadastrarUsuario.php">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+            </form>
+        </div>
     </body>
 </html>

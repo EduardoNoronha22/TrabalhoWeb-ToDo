@@ -1,3 +1,56 @@
+<?php
+    require '../scripts/config.php';
+    require '../scripts/database.php';
+
+    header('content-type: text/html; charset: utf-8');
+    
+    if (!isset($_SESSION)){
+         session_start();
+    }
+    if (!isset($_SESSION['UsuarioID'])){
+        session_destroy();
+        header("Location: ../paginas/index.php");
+    }
+    
+    $userId = $_SESSION['UsuarioID'];
+    $userImg= $_SESSION['UsuarioImg'];
+    $userLogin = $_SESSION['UsuarioLogin'];
+
+    $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
+    foreach($infos as $dados);
+        $userNome = $dados["nome"];
+        $userMail= $dados["email"];
+
+    if(isset( $_GET['pid']))
+        $projetoid = $_GET['pid']; //Debugando valor do id que ira pegar da url
+
+    if(isset( $_GET['tid']))
+        $tarefaid = $_GET['tid'];
+
+    $infostarefa = DBRead('tarefa', "WHERE id_tarefa = '{$tarefaid}'");
+    foreach($infostarefa as $tinfo);
+        $tarnome = $tinfo["nome"];
+        $tardesc= $tinfo["descricao"];
+        $tarest= $tinfo["estado"];
+
+    $owner = DBRead('projeto'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$projetoid."')");
+    if(!$owner){
+        $member = DBRead('membro'," WHERE (`id_membro` = '".$userId."') AND (`id_projeto` = '".$projetoid."')");
+        if(!$member){
+            header("Location: ../paginas/homepage.php");
+        }
+        else{
+            $permission = 0;
+        }
+    }
+    else{
+        $permission = 1;
+    }
+
+    foreach ($owner as $own) {
+        $nproj = $own['nome'];
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +84,21 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 </head>
 <body class="skin-blue collapsed-box">
+<?php
+    if(isset($_POST['edittar'] )){
+        $form["nome"] = DBEscape(strip_tags( trim( $_POST["nome"])));
+        $form["descricao"] = DBEscape(strip_tags( trim( $_POST["desc"])));
+        $form["estado"] = $_POST["est"];
+        if( empty( $form["nome"]) or (empty( $form["descricao"]))){
+            echo '<script> alert("Preencher os campos!")</script>';
+        }
+        else{
+            if( DBUpDate('tarefa', $form, "id_tarefa = '{$tarefaid}'")){
+                echo '<script> alert("Alterado com sucesso!"); location.href="projeto.php?pid='.$projetoid.'"</script>';
+            }
+        }
+    }
+?>
 <div class="wrapper">
     <header class="main-header">
         <a href="homepage.php" class="logo"><b>To</b>Do</a>
@@ -77,22 +145,37 @@
     <div class="content-wrapper bg-light-blue-active">
         <div class="content">
             <div align="center">
-                <a href="projeto.php">
-                    <h2 class="bg-light-blue-active"> Nome do Projeto </h2>
+                <?php echo '<a href="projeto.php?pid='.$projetoid.'">'; ?>
+                    <h2 class="bg-light-blue-active"> Projeto: <?php echo $nproj ?> </h2>
                 </a>
-                <a href="tarefa.php" class="h3">
-                    <h3 class="bg-light-blue-active"> Nome da Tarefa</h3>
-                </a>
+                    <h3 class="bg-light-blue-active"> Tarefa: <?php echo $tarnome ?></h3>
 
                 <!-- Aqui vai precisar ter um if para dependendo do status da tarefa, mudar a cor da caixa em volta dela -->
                 <!-- Quando for testar a descriçao, tente uma descriçao grande pra ver se tem quebra de linha-->
-                <div class="box-solid bg-red col-md-4 col-lg-offset-4">
-                    <div class="box-header">
-                        <h4 class="bg-red">DO</h4>
-                    </div>
-                    <div class="box-body">
-                        <h5 class="text-center"> Descrição da Tarefa </h5>
-                    </div>
+                <div class="box-solid bg-light-blue-active col-md-4 col-lg-offset-4">
+                    <form action="" method="post">
+                        <div class="box-body">
+                            <h5 class="text-center"> Nome: </h5>
+                            <input type="text" class="form-control" name="nome" value="<?php echo $tarnome ?>">
+                        </div>
+                        <div class="box-body">
+                            <h5 class="text-center"> Descrição: </h5>
+                            <input type="text" class="form-control" name="desc" value="<?php echo $tardesc ?>">
+                        </div>
+                        <div class="box-body">
+                            <h5 class="text-center"> Estado: </h5>
+                            <select id="est" name="est" style="color: black;" > 
+                              <option value="1" <?php if($tarest == '1'){ echo'selected="selected"';}?>>To Do</option>
+                              <option value="2" <?php if($tarest == '2'){ echo'selected="selected"';}?>>Doing</option>
+                              <option value="3" <?php if($tarest == '3'){ echo'selected="selected"';}?>>Done</option>
+                            </select>
+                        </div>
+                        <div class="box-body">
+                            <button type="submit" name="edittar" class="btn btn-bitbucket bg-gray col-lg-offset-0">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Atualizar
+                            </button>
+                        </div>
+                    </form>
                 </div>
                 <!--
                 <div class="box-solid bg-orange center-block col-md-4">
@@ -115,6 +198,7 @@
                 -->
             </div>
         </div>
+        <!--
         <div class="col-sm-4 col-sm-offset-4" align="center">
             <h4> Mudar para: </h4>
             <div class="text-center pull-left">
@@ -125,6 +209,7 @@
                 <button type="submit" class="btn bg-green" name="" value=""> Done</button>
             </div>
         </div>
+        -->
     </div>
 </div>
 <script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>

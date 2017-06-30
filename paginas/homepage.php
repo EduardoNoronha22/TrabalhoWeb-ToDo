@@ -134,7 +134,7 @@
                                 {
                                     foreach($projetos as $projeto){
                                         //$projeto = array($projetos);
-                                        $urlprojeto = "../paginas/projeto.php?verificador=".$projeto['id_projeto'];
+                                        $urlprojeto = "../paginas/projeto.php?pid=".$projeto['id_projeto'];
                                         echo '<li>
                                                 <a href="'.$urlprojeto.'"
                                                 <span class="text-center">'.$projeto['nome'].'</span>
@@ -163,7 +163,7 @@
                                     foreach($projetospart as $p){
                                         $part = DBRead('projeto'," WHERE (`id_projeto` = '".$p['id_projeto'] ."')");
                                         foreach ($part as $projp ) {
-                                            $urlprojeto = "../paginas/projeto.php?verificador=".$projp['id_projeto'];
+                                            $urlprojeto = "../paginas/projeto.php?pid=".$projp['id_projeto'];
                                             echo '<li>
                                                     <a href="'.$urlprojeto.'"
                                                     <span class="text-center">'.$projp['nome'].'</span>

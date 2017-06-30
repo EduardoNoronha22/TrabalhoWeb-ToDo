@@ -22,12 +22,13 @@
         $userMail= $dados["email"];
 
     // Validando as actions se existem e se nao sao vazias
-    if(isset( $_GET['verificador']))
-        $verificador = $_GET['verificador']; //Debugando valor do id que ira pegar da url
+    if(isset( $_GET['pid']))
+        $projetoid = $_GET['pid']; //Debugando valor do id que ira pegar da url
 
-    $owner = DBRead('projeto'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
+    $getnome = DBRead('projeto'," WHERE `id_projeto` = '".$projetoid."' ");
+    $owner = DBRead('projeto'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$projetoid."')");
     if(!$owner){
-        $member = DBRead('membro'," WHERE (`id_membro` = '".$userId."') AND (`id_projeto` = '".$verificador."')");
+        $member = DBRead('membro'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$projetoid."')");
         if(!$member){
             header("Location: ../paginas/homepage.php");
         }
@@ -38,9 +39,9 @@
     else{
         $permission = 1;
     }
-
-    foreach ($owner as $own) {
-        $nproj = $own['nome'];
+        
+    foreach ($getnome as $gnome) {
+        $nproj = $gnome['nome'];
     }
 ?>
 
@@ -134,21 +135,23 @@
                         <?php echo $nproj ?>
                     </h1>
                     <?php
-                    if(isset($_POST['delep'])){
-                        DBDelete('projeto', "WHERE `id_projeto` = $verificador ");
-                        echo '<script> alert("Projeto Excluido"); location.href="../paginas/homepage.php"</script>';
-                    }
                     if($permission == 1){
                         echo '
-                        <form action="" method="post">
-                        <button type="submit" name="delep" class="btn btn-bitbucket bg-red" aria-label="Left Align" name="deletarproj">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar Projeto
-                        </button>
-                        </form>
+                            <a href="../scripts/delprojeto.php?pid='.$projetoid.'" onClick="return confirm(\' ' . "Confirmar exclusao?" . ' \' )">
+                            <button type="button" name="delep" class="btn btn-bitbucket bg-red" aria-label="Left Align" name="deletarproj">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
+                            </button>
+                            </a>
 
-                        <button type="button" class="btn btn-success bg-green" aria-label="Left Align">
-                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span> Finalizar Projeto
-                        </button>';
+
+                            <button type="button" class="btn btn-success bg-green" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-check" aria-hidden="true"></span> Finalizar
+                            </button>
+
+                            <a href="../paginas/criartarefa.php?pid='.$projetoid.'">
+                            <button type="button" name="addMember" class="btn btn-success bg-yellow" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Tarefa
+                            </button></a>';
                     }
                     ?>
 
@@ -159,13 +162,13 @@
                             </div>
                             <div class="box-body">
                             <?php
-                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$verificador ."') AND (`estado` = 1)");
+                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$projetoid ."') AND (`estado` = 1)");
                                 if(!$tarefas){
                                     echo '<h5 class="text-center"> ---- </h5>';
                                 }
                                 else
                                     foreach($tarefas as $tarefa){
-                                        $urltarefa = "../paginas/tarefa.php?verificador=".$tarefa['id_tarefa'];
+                                        $urltarefa = "../paginas/tarefa.php?pid=".$projetoid."&tid=".$tarefa['id_tarefa'];
                                         echo '<a href="'.$urltarefa.'" class="bg-red">
                                                 <h5 class="text-center">'.$tarefa['nome'].'</h5>
                                               </a>';
@@ -179,13 +182,13 @@
                             </div>
                             <div class="box-body">
                                 <?php
-                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$verificador ."') AND (`estado` = 2)");
+                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$projetoid ."') AND (`estado` = 2)");
                                 if(!$tarefas){
                                     echo '<h5 class="text-center"> ---- </h5>';
                                 }
                                 else
                                     foreach($tarefas as $tarefa){
-                                        $urltarefa = "../paginas/tarefa.php?verificador=".$tarefa['id_tarefa'];
+                                        $urltarefa = "../paginas/tarefa.php?pid=".$projetoid."&tid=".$tarefa['id_tarefa'];
                                         echo '<a href="'.$urltarefa.'" class="bg-orange">
                                                 <h5 class="text-center">'.$tarefa['nome'].'</h5>
                                               </a>';
@@ -199,13 +202,13 @@
                             </div>
                             <div class="box-body bg-green">
                                 <?php
-                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$verificador ."') AND (`estado` = 3)");
+                                $tarefas = DBRead('tarefa'," WHERE (`id_projeto` = '".$projetoid ."') AND (`estado` = 3)");
                                 if(!$tarefas){
                                     echo '<h5 class="text-center"> ---- </h5>';
                                 }
                                 else
                                     foreach($tarefas as $tarefa){
-                                        $urltarefa = "../paginas/tarefa.php?verificador=".$tarefa['id_tarefa'];
+                                        $urltarefa = "../paginas/tarefa.php?pid=".$projetoid."&tid=".$tarefa['id_tarefa'];
                                         echo '<a href="'.$urltarefa.'" class="bg-green">
                                                 <h5 class="text-center">'.$tarefa['nome'].'</h5>
                                               </a>';
@@ -219,7 +222,7 @@
 
                         $findMail = DBEscape(strip_tags( trim( $_POST["mailMember"])));
 
-                        $form["id_projeto"] = $verificador;
+                        $form["id_projeto"] = $projetoid;
                         $form["id_owner"] = $userId;
 
                         $membros = DBRead('usuario', "WHERE email = '{$findMail}'");
@@ -230,7 +233,7 @@
                             foreach ($membros as $membro) {
                                 if($membro){
                                     $form["id_user"] = $membro['id_user'];
-                                    $canadd = DBRead('membro', "WHERE (id_user = '{$form["id_user"]}') AND (id_owner = '{$userId}') AND (id_projeto = '{$verificador}') LIMIT 1");
+                                    $canadd = DBRead('membro', "WHERE (id_user = '{$form["id_user"]}') AND (id_owner = '{$userId}') AND (id_projeto = '{$projetoid}') LIMIT 1");
                                     if(!$canadd){
                                         DBCreate('membro', $form);
                                         echo '<script> alert("Membro adicionado!")</script>';
@@ -245,7 +248,7 @@
                     if($permission == 1){
                         echo '
                         <form action="" method="post">
-                        <input type="text" class="form-control" name="mailMember" aria-describedby="helpId" placeholder="">
+                        <input type="text" name="mailMember" size=50 style="color: black;">
                         <button type="submit" name="addMember" class="btn btn-success bg-yellow" aria-label="Left Align">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar Membro
                         </button>

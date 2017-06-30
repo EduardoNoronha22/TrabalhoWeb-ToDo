@@ -3,7 +3,7 @@
     require '../scripts/database.php';
 
     header('content-type: text/html; charset: utf-8');
-
+    
     if (!isset($_SESSION)){
          session_start();
     }
@@ -79,7 +79,7 @@
             </div>
             <ul class="sidebar-menu">
                 <li>
-                    <a href="../paginas/criarprojeto.php">
+                    <a href="../paginas/novoprojeto.php">
                         <i class="fa fa-plus"></i>
                         <span>Novo Projeto</span>
                     </a>
@@ -106,7 +106,7 @@
 
         if(!empty($form["nome"]))
             if (DBCreate('projeto', $form)){
-                echo '<script> alert("Projeto criado!")</script>';
+                header("Location: ../paginas/homepage.php");
             }
         else{
             echo '<script> alert("Escolha um nome!")</script>';
