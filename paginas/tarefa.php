@@ -76,30 +76,54 @@
 
     <div class="content-wrapper bg-light-blue-active">
         <div class="content">
-            <!--<div class="col-md-9 col-md-offset-1">-->
-            <div class="form-group col-lg-offset-3">
-                <div class="col-md-9 col-md-offset-0">
-                    <label for="nome"> Nome do Projeto</label>
-                </div>
-                <div class="col-xs-7">
-                    <input type="text" class="form-control" name="nome" id="nome" aria-describedby="helpId"
-                           placeholder="">
-                </div>
-            </div>
-            <div class="form-group col-lg-offset-3">
-                <div class="col-md-9 col-md-offset-0">
-                    <label for="nome"> Descrição do Projeto</label>
-                </div>
-                <div class="col-xs-7">
-                    <textarea class="form-control" rows="5"></textarea>
+            <div align="center">
+                <a href="projeto.php">
+                    <h2 class="bg-light-blue-active"> Nome do Projeto </h2>
+                </a>
+                <a href="tarefa.php" class="h3">
+                    <h3 class="bg-light-blue-active"> Nome da Tarefa</h3>
+                </a>
 
-                    <button type="button" class="btn btn-bitbucket bg-success pull-right" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Criar Projeto
-                    </button>
+                <!-- Aqui vai precisar ter um if para dependendo do status da tarefa, mudar a cor da caixa em volta dela -->
+                <!-- Quando for testar a descriçao, tente uma descriçao grande pra ver se tem quebra de linha-->
+                <div class="box-solid bg-red col-md-4 col-lg-offset-4">
+                    <div class="box-header">
+                        <h4 class="bg-red">DO</h4>
+                    </div>
+                    <div class="box-body">
+                        <h5 class="text-center"> Descrição da Tarefa </h5>
+                    </div>
                 </div>
+                <!--
+                <div class="box-solid bg-orange center-block col-md-4">
+                    <div class="box-header">
+                        <h4 class="bg-orange">DOING</h4>
+                    </div>
+                    <div class="box-body">
+                        <h5 class="text-center"> Descrição da Tarefa </h5>
+                    </div>
+                </div>
+
+                <div class="box-solid bg-green col-md-4">
+                    <div class="box-header">
+                        <h4 class="bg-green">DONE</h4>
+                    </div>
+                    <div class="box-body bg-green">
+                        <h5 class="text-center"> Descrição da Tarefa </h5>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+        <div class="col-sm-4 col-sm-offset-4" align="center">
+            <h4> Mudar para: </h4>
+            <div class="text-center pull-left">
+                <button type="submit" class="btn bg-orange" name="" value=""> Doing</button>
             </div>
 
-            <div class="center-block"></div>
+            <div class="text-center pull-right">
+                <button type="submit" class="btn bg-green" name="" value=""> Done</button>
+            </div>
         </div>
     </div>
 </div>
