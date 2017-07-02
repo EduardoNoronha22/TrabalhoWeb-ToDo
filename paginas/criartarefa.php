@@ -1,28 +1,35 @@
 <?php
-require '../scripts/config.php';
-require '../scripts/database.php';
+    require '../scripts/config.php';
+    require '../scripts/database.php';
 
-header('content-type: text/html; charset: utf-8');
+    header('content-type: text/html; charset: utf-8');
 
-if (!isset($_SESSION)){
-    session_start();
-}
-if (!isset($_SESSION['UsuarioID'])){
-    session_destroy();
-    header("Location: ../paginas/index.php");
-}
+    if (!isset($_SESSION)){
+        session_start();
+    }
+    if (!isset($_SESSION['UsuarioID'])){
+        session_destroy();
+        header("Location: ../paginas/index.php");
+    }
 
-$userId = $_SESSION['UsuarioID'];
-$userImg= $_SESSION['UsuarioImg'];
-$userLogin = $_SESSION['UsuarioLogin'];
+    $userId = $_SESSION['UsuarioID'];
+    $userLogin = $_SESSION['UsuarioLogin'];
 
-$infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
-foreach($infos as $dados);
-$userNome = $dados["nome"];
-$userMail= $dados["email"];
+    $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
+    foreach($infos as $dados);
+    $userNome = $dados["nome"];
+    $userMail= $dados["email"];
+    $photo = $dados["linkimg"];
 
-if(isset( $_GET['pid']))
-        $projetoid = $_GET['pid']; //Debugando valor do id que ira pegar da url
+    if(empty($photo)){
+        $urlphoto = '../img/default-icon.jpg';
+    }
+    else{
+        $urlphoto = '../scripts/getImagem.php';
+    }
+
+    if(isset( $_GET['pid']))
+            $projetoid = $_GET['pid']; //Debugando valor do id que ira pegar da url
 
 ?>
 
@@ -73,7 +80,7 @@ if(isset( $_GET['pid']))
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" />
+                    <img src="<?php echo $urlphoto ?>" class="img-circle" alt="User Image" />
                 </div>
                 <div class="pull-left info">
                     <p><?php echo $userNome ?></p>

@@ -13,13 +13,20 @@
     }
 
     $userId = $_SESSION['UsuarioID'];
-    $userImg= $_SESSION['UsuarioImg'];
     $userLogin = $_SESSION['UsuarioLogin'];
 
     $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
     foreach($infos as $dados);
         $userNome = $dados["nome"];
         $userMail= $dados["email"];
+        $photo = $dados["linkimg"];
+
+    if(empty($photo)){
+        $urlphoto = '../img/default-icon.jpg';
+    }
+    else{
+        $urlphoto = '../scripts/getImagem.php';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -124,6 +131,24 @@
                 }
             }
         }
+
+        if(isset($_POST['upimg'] )){
+            $img = $_FILES["imagem"];
+            if($img != NULL) { 
+                $nomeFinal = time().'.jpg';
+                if (move_uploaded_file($img['tmp_name'], $nomeFinal)) {
+                    $tamanhoImg = filesize($nomeFinal); 
+
+                    $mysqlImg["linkimg"] = addslashes(fread(fopen($nomeFinal, "r"), $tamanhoImg)); 
+
+                    if( DBUpDate('usuario', $mysqlImg, "id_user = '{$userId}'")){
+                        echo '<script> alert("Imagem alterada com sucesso!"); location.href="../paginas/alterardados.php"</script>';
+                    }
+
+                    unlink($nomeFinal);
+                }
+            }    
+        }
     ?>
     <div class="wrapper">
         <header class="main-header">
@@ -139,7 +164,7 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" />
+                        <img src="<?php echo $urlphoto ?>" class="img-circle" alt="User Image" />
                     </div>
                     <div class="pull-left info">
                         <p><?php echo $userNome ?></p>
@@ -223,6 +248,19 @@
                         </div>
                     </div>
                 </form>
+                <div class="form-group has-feedback col-xs-8 col-lg-offset-3">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="col-md-9 col-md-offset-0">
+                            <label for="imagem">Imagem:</label>
+                        </div>
+                        <div class="col-xs-7">
+                            <input type="file" name="imagem"/>
+                            <button type="submit" name="upimg" class="btn btn-bitbucket bg-gray col-lg-offset-4" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Enviar Imagem
+                            </button>
+                        </div>
+                    </form>
+                </div>
         </div>
     </div>
     <script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>

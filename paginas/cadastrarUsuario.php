@@ -53,42 +53,25 @@
             $form["email"] = DBEscape(strip_tags( trim( $_POST["email"])));
             
             //Verificar se usuario ja existe
-            $validarUsuario = DBRead('usuario', "WHERE userlogin = '{$form["userlogin"]}' LIMIT 1");
-            if($validarUsuario){
-                echo '<p style="text-align: center; font-weight: bold;">Usuário já existe!</p>';
+
+            if( empty($form["nome"]) or empty($form["userlogin"]) or empty($senha) or empty($csenha) or empty($form["email"])){
+                echo '<p style="text-align: center; font-weight: bold;">Preencha todos os campos!</p>';
             }
             else{
-                //Validar email, nome e usuario
-                if (!preg_match("/^[a-zA-Z ]*$/", $form["nome"])) {
-                  echo '<p style="text-align: center; font-weight: bold;">Nome invalído somente letras e espaços!</p>';
-                }   
-                else if (!preg_match("/^[a-zA-Z0-9]*$/", $form["userlogin"])) {
-                  echo '<p style="text-align: center; font-weight: bold;">Usuário invalído somente letras e números!</p>';
+                $validarUsuario = DBRead('usuario', "WHERE userlogin = '{$form["userlogin"]}' LIMIT 1");
+                if($validarUsuario){
+                    echo '<p style="text-align: center; font-weight: bold;">Usuário já existe!</p>';
                 }
-                else if (!filter_var($form["email"], FILTER_VALIDATE_EMAIL)) {
-                  echo '<p style="text-align: center; font-weight: bold;">Email invalído!</p>'; 
-                }
-                else{               
-                    // Validando vazio
-                    if( empty( $form["nome"])){
-                        echo '<p style="text-align: center; font-weight: bold;">Preencha o nome!</p>';
+                else{
+                    if (!preg_match("/^[a-zA-Z ]*$/", $form["nome"])) {
+                        echo '<p style="text-align: center; font-weight: bold;">Nome invalído somente letras e espaços!</p>';
+                    }   
+                    else if (!preg_match("/^[a-zA-Z0-9]*$/", $form["userlogin"])) {
+                        echo '<p style="text-align: center; font-weight: bold;">Usuário invalído somente letras e números!</p>';
                     }
-                    else if( empty( $form["userlogin"])){
-                        echo '<p style="text-align: center; font-weight: bold;">Preencha o usuário</p>';
+                    else if (!filter_var($form["email"], FILTER_VALIDATE_EMAIL)) {
+                        echo '<p style="text-align: center; font-weight: bold;">Email invalído!</p>'; 
                     }
-                    else if( empty( $senha)){
-                        echo '<p style="text-align: center; font-weight: bold;">Preencha a senha</p>';
-                    }
-                    else if( empty( $csenha)){
-                        echo '<p style="text-align: center; font-weight: bold;">Preencha a Confirmação de senha</p>';
-                    }
-                    else if( empty( $form["email"])){
-                        echo '<p style="text-align: center; font-weight: bold;">Preencha o Email</p>';
-                    }
-                    else if($senha != $csenha){
-                        echo '<p style="text-align: center; font-weight: bold;">Senha e confirmação não conferem!</p>';
-                    }
-                    //Gravar tarefa
                     else{
                         if( DBCreate('usuario', $form)){
                             echo '<p style="text-align: center; font-weight: bold;">Usuário cadastrado!</p>';
@@ -103,7 +86,7 @@
         }
     ?>
         <div>
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
 
                 <div class="col-xs-4 col-lg-offset-4 bg-gray">
 

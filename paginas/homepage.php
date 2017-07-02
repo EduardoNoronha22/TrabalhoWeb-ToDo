@@ -13,14 +13,21 @@
     }
 
     $userId = $_SESSION['UsuarioID'];
-    $userImg= $_SESSION['UsuarioImg'];
     $userLogin = $_SESSION['UsuarioLogin'];
 
     $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
-    foreach($infos as $dados);
+    foreach($infos as $dados){
         $userNome = $dados["nome"];
         $userMail= $dados["email"];
+        $photo = $dados["linkimg"];
+    }
 
+    if(empty($photo)){
+        $urlphoto = '../img/default-icon.jpg';
+    }
+    else{
+        $urlphoto = '../scripts/getImagem.php';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +83,7 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" />
+                            <img src="<?php echo $urlphoto ?>" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
                             <p><?php echo $userNome ?></p>
@@ -109,7 +116,7 @@
                 <section class="content">
                     <div>
                         <div class="pull-right">
-                            <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" height="162" width="162">
+                            <img src="<?php echo $urlphoto ?>" class="img-circle" alt="User Image" height="162" width="162">
                         </div>
                         <div>
                             <h1 class="text-center">

@@ -13,13 +13,20 @@
     }
     
     $userId = $_SESSION['UsuarioID'];
-    $userImg= $_SESSION['UsuarioImg'];
     $userLogin = $_SESSION['UsuarioLogin'];
 
     $infos = DBRead('usuario', "WHERE id_user = '{$userId}'");
     foreach($infos as $dados);
         $userNome = $dados["nome"];
         $userMail= $dados["email"];
+        $photo = $dados["linkimg"];
+
+    if(empty($photo)){
+        $urlphoto = '../img/default-icon.jpg';
+    }
+    else{
+        $urlphoto = '../scripts/getImagem.php';
+    }
 
     // Validando as actions se existem e se nao sao vazias
     if(isset( $_GET['pid']))
@@ -98,7 +105,7 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="<?php echo $userImg ?>" class="img-circle" alt="User Image" />
+                    <img src="<?php echo $urlphoto ?>" class="img-circle" alt="User Image" />
                 </div>
                 <div class="pull-left info">
                     <p><?php echo $userNome ?></p>
