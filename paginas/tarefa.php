@@ -34,6 +34,11 @@
     if(isset( $_GET['tid']))
         $tarefaid = $_GET['tid'];
 
+
+    $infosprojeto = DBRead('projeto', "WHERE id_projeto = '{$projetoid}'");
+    foreach($infosprojeto as $pinfo);
+        $nproj = $pinfo["nome"];
+
     $infostarefa = DBRead('tarefa', "WHERE id_tarefa = '{$tarefaid}'");
     foreach($infostarefa as $tinfo);
         $tarnome = $tinfo["nome"];
@@ -42,7 +47,7 @@
 
     $owner = DBRead('projeto'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$projetoid."')");
     if(!$owner){
-        $member = DBRead('membro'," WHERE (`id_membro` = '".$userId."') AND (`id_projeto` = '".$projetoid."')");
+        $member = DBRead('membro'," WHERE (`id_user` = '".$userId."') AND (`id_projeto` = '".$projetoid."')");
         if(!$member){
             header("Location: ../paginas/homepage.php");
         }
@@ -54,9 +59,6 @@
         $permission = 1;
     }
 
-    foreach ($owner as $own) {
-        $nproj = $own['nome'];
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
