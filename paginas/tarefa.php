@@ -98,12 +98,19 @@
         $form["nome"] = DBEscape(strip_tags( trim( $_POST["nome"])));
         $form["descricao"] = DBEscape(strip_tags( trim( $_POST["desc"])));
         $form["estado"] = $_POST["est"];
-        if( empty( $form["nome"]) or (empty( $form["descricao"]))){
-            echo '<script> alert("Preencher os campos!")</script>';
+
+        if($form["estado"] == 10){
+            DBDelete('tarefa',"id_tarefa = '{$tarefaid}'");
+            echo '<script> alert("Excluida com sucesso!"); location.href="projeto.php?pid='.$projetoid.'"</script>';
         }
         else{
-            if( DBUpDate('tarefa', $form, "id_tarefa = '{$tarefaid}'")){
-                echo '<script> alert("Alterado com sucesso!"); location.href="projeto.php?pid='.$projetoid.'"</script>';
+            if( empty( $form["nome"]) or (empty( $form["descricao"]))){
+                echo '<script> alert("Preencher os campos!")</script>';
+            }
+            else{
+                if( DBUpDate('tarefa', $form, "id_tarefa = '{$tarefaid}'")){
+                    echo '<script> alert("Alterado com sucesso!"); location.href="projeto.php?pid='.$projetoid.'"</script>';
+                }
             }
         }
     }
@@ -177,6 +184,7 @@
                               <option value="1" <?php if($tarest == '1'){ echo'selected="selected"';}?>>To Do</option>
                               <option value="2" <?php if($tarest == '2'){ echo'selected="selected"';}?>>Doing</option>
                               <option value="3" <?php if($tarest == '3'){ echo'selected="selected"';}?>>Done</option>
+                              <option value="10">Excluir</option>
                             </select>
                         </div>
                         <div class="box-body">
